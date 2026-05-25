@@ -147,7 +147,7 @@ body {
 
 .options-box {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 80%;
 
     background-color: #3f3f3f;
@@ -158,12 +158,6 @@ body {
     padding: 15px 30px;
 }
 
-.option {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
 .option-list {
     display: flex;
     flex-direction: column;
@@ -171,8 +165,16 @@ body {
     gap: 5px;
 }
 
+.option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
 .option-field {
     flex: 1;
+    min-width: 0;
     font-size: 1.25rem;
     background-color: #222222;
     color: white;

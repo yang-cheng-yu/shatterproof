@@ -8,6 +8,7 @@ function init() {
     optionControl.init();
 
     document.getElementById('go').addEventListener('click', go);
+
 }
 
 async function go() {
@@ -32,7 +33,7 @@ async function go() {
         if (key) {
             headersObj[key] = value;
         }
-    });
+    });    
 
     const options = {
         headers: headersObj,
