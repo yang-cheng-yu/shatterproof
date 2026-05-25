@@ -1,24 +1,26 @@
+@import url(./global.css);
+
 html,
 body {
     display: flex;
-    flex: 1;
+    flex-direction: column;
     width: 100%;
     min-height: 100vh;
     margin: 0;
+    color: white
 }
 
 .top-bar {
     display: flex;
     align-items: center;
-    position: absolute;
     top: 0;
     left: 0;
     padding: 20px;
-    height: 60px;
-    width: calc(100% - 40px);
+    height: 100px;
+    width: 100%;
     background: linear-gradient(135deg, #684162, #372f5a);
     background-repeat: no-repeat;
-    color: white;
+    ;
 }
 
 .title {
@@ -28,12 +30,20 @@ body {
 
 .container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+    gap: 20px;
+
     align-items: center;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     background: linear-gradient(#b18398, #33263b);
     background-repeat: no-repeat;
+}
+
+.over-section {
+    height: 300px;
+    width: 80%;
 }
 
 .center-bar {
@@ -42,7 +52,6 @@ body {
     width: 80%;
     height: calc(1.5rem + 30px);
     background-color: #5f5863;
-    color: white;
 
     font-size: 1.5rem;
 
@@ -57,8 +66,14 @@ body {
     align-items: center;
     background-color: #514757;
 
-    width: 150px;
+    width: 200px;
     height: 100%;
+
+    color: inherit;
+    font-weight: bold;
+    font-size: inherit;
+
+    border: none;
     border-right: 3px solid #3f3f3f;
     padding-left: 15px;
 
@@ -67,8 +82,10 @@ body {
     transition: 0.2s ease;
 }
 
-#method:hover {
+#method:hover,
+#method:focus {
     background-color: #433947;
+    outline: none;
     cursor: pointer;
 }
 
@@ -122,4 +139,78 @@ body {
 #go:hover,
 #go:focus {
     background-color: #74c47b;
+    outline: none;
+}
+
+.options-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 80%;
+
+    background-color: #3f3f3f;
+    border-radius: 25px;
+}
+
+.options-box > div {
+    padding: 15px 30px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.option-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.option-field {
+    flex: 1;
+    font-size: 1rem;
+    background-color: #222222;
+    color: white;
+    padding: 10px;
+
+    border: 1px solid #636363;
+    border-radius: 5px;
+}
+
+.option-text {
+    padding: 10px;
+}
+
+.option-button {
+    height: 50px;
+    aspect-ratio: 1/1;
+    background-color: #00000000;
+
+    color: white;
+    font-size: 1.5em;
+
+    border: none;
+    border-radius: 10px;
+}
+
+.option-button:hover {
+    background-color: #636363;
+}
+
+#body {
+    width: 100%;
+    height: 500px;
+
+    font-size: 1rem;
+    font-family: monospace;
+    background-color: #222222;
+    color: white;
+    padding: 10px;
+
+    border: 1px solid #636363;
+    border-radius: 5px;
+
+    resize: none;
+    overflow-y: scroll;
 }
