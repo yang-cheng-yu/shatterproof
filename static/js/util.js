@@ -36,3 +36,32 @@ export function appendNew({ type, parent, cl = '', id = '', text = '', data = {}
 
     return el;
 }
+
+/**
+ * 
+ * @param {string} string 
+ * @returns {boolean} True if the string is a valid URL
+ */
+export function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+
+/**
+ * 
+ * @param {string} string 
+ * @returns {boolean} True if the string is a valid URL
+ */
+export function isValidJson(string) {
+  try {
+    JSON.parse(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}

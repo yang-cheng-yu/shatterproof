@@ -18,13 +18,12 @@ export class NetworkError extends Error {
 
 export class FetchWrapper {
 
-  async request(uri, options = {}) {
-    const url = `${this.baseURL}${uri}`;
+  static async request(uri, options = {}) {
 
     let response;
 
     try {
-      response = await fetch(url, config);
+      response = await fetch(uri, options);
     } catch (error) {
       throw new NetworkError(error.message);
     }
@@ -33,15 +32,11 @@ export class FetchWrapper {
       throw new HttpError(response.status, response.statusText, response.url);
     }
 
-    return this._parseResponse(response);
+    return response;
   }
 
   async _parseResponse(response) {
     const contentType = response.headers.get('content-type');
-    
-    if (response.status === 204) {
-      return {};
-    }
 
     if (contentType && contentType.includes('application/json')) {
       return response.json();
