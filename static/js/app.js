@@ -13,6 +13,7 @@ function init() {
 async function go() {
     document.getElementById('go').blur;
 
+    const responseContainer = document.querySelector('.response-box');
     const responseBox = document.getElementById('response');
     const statusBox = document.getElementById('status');
     const contentTypeBox = document.getElementById('content-type');
@@ -87,4 +88,11 @@ async function go() {
     } else {
         responseBox.value = await response.text();
     }
+
+    if (responseContainer.classList.contains('closed')) {
+        responseContainer.classList.remove('closed');
+        responseContainer.classList.add('open');
+    }
+
+    responseContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }

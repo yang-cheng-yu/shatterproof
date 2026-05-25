@@ -1,9 +1,15 @@
-/* scrollbars */
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: #a0a0a0 transparent;
   box-sizing: border-box;
+}
+
+/* scrollbars */
+
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #a0a0a0 transparent;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -18,7 +24,6 @@
 ::-webkit-scrollbar-thumb {
   background-color: #a0a0a0;
   border-radius: 10px;
-  
   border: 3px solid transparent; 
   background-clip: content-box; 
 }

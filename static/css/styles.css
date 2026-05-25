@@ -7,7 +7,10 @@ body {
     width: 100%;
     min-height: 100vh;
     margin: 0;
-    color: white
+    color: white;
+
+    overflow-x: hidden;
+    transition: 0.2s ease
 }
 
 .top-bar {
@@ -226,6 +229,18 @@ body {
 
     background-color: #514757;
     border-radius: 25px;
+
+    transition: 0.5s ease;
+}
+
+.response-box.closed {
+    display: none;
+    height: 0;
+}
+
+.response-box.open {
+    display: flex;
+    height: auto;
 }
 
 #response {
