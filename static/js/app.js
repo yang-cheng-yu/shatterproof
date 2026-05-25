@@ -10,8 +10,12 @@ function init() {
     document.getElementById('go').addEventListener('click', go);
 }
 
-function go() {
+async function go() {
     document.getElementById('go').blur;
+
+    const responseBox = document.getElementById('response');
+    const statusBox = document.getElementById('status');
+    const contentTypeBox = document.getElementById('content-type');
 
     let uri = document.getElementById('search').value;
     const method = document.getElementById('method').value;
@@ -56,12 +60,31 @@ function go() {
     let response;
 
     try {
-        response = FetchWrapper.request(uri, options);
+        response = await FetchWrapper.request(uri, options);
     } catch (error) {
         if (error instanceof HttpError) {
             console.log('HTTP Error:' + error.status);
         } else if (error instanceof NetworkError) {
             console.log('Network Error');
         }
+    }
+    console.log(response);
+    
+
+    const status = response.status;
+    const isSuccess = status >= 200 && status < 300;
+    const statusLine = status + " " + response.statusText;
+    const contentType = response.headers.get('content-type') || 'text/plain';
+
+    statusBox.textContent = statusLine;
+    statusBox.classList.toggle('status-green', isSuccess);
+    statusBox.classList.toggle('status-red', !isSuccess);
+
+    contentTypeBox.textContent = contentType;
+
+    if (contentType && contentType.includes('application/json')) {
+        responseBox.value = JSON.stringify(await response.json(), null, 2);
+    } else {
+        responseBox.value = await response.text();
     }
 }

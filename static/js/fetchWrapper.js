@@ -43,25 +43,5 @@ export class FetchWrapper {
     }
     
     return response.text();
-  }
-
-  get(uri, options = {}) {
-    return this.request(uri, { ...options, method: 'GET' });
-  }
-
-  post(uri, options = {}) {
-    return this.request(uri, { ...options, method: 'POST' });
-  }
-
-  put(uri, options = {}) {
-    return this.request(uri, { ...options, method: 'PUT' });
-  }
-
-  patch(uri, options = {}) {
-    return this.request(uri, { ...options, method: 'PATCH' });
-  }
-
-  delete(uri, options = {}) {
-    return this.request(uri, { ...options, method: 'DELETE' });
-  }
+  } 
 }
