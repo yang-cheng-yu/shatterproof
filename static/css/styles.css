@@ -9,6 +9,9 @@ body {
     margin: 0;
     color: white;
 
+    background: linear-gradient(135deg, #684162, #372f5a);
+    background-repeat: no-repeat;
+
     overflow-x: hidden;
     transition: 0.2s ease
 }
@@ -80,9 +83,6 @@ body {
     padding: 20px;
     height: 100px;
     width: 100%;
-    background: linear-gradient(135deg, #684162, #372f5a);
-    background-repeat: no-repeat;
-    ;
 }
 
 .title {
@@ -108,7 +108,7 @@ body {
 }
 
 .over-section {
-    height: 300px;
+    height: 150px;
     width: 80%;
 }
 
@@ -186,6 +186,9 @@ body {
 }
 
 #go {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #508a55;
 
     width: 150px;
