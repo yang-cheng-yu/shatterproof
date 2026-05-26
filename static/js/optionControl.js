@@ -1,16 +1,18 @@
 import * as util from "./util.js";
 
 export function init() {
+    const searchBox = document.getElementById('search');
+
     const addQuery = document.getElementById('add-query');
     const addHeader = document.getElementById('add-header');
 
-    addQuery.addEventListener('click', queryRow);
-    addHeader.addEventListener('click', headerRow)
+    searchBox.addEventListener('input', searchToQuery);
+
+    addQuery.addEventListener('click', emptyQueryRow);
+    addHeader.addEventListener('click', emptyHeaderRow);
 }
 
-function row(type) {
-    console.log(`${type}-list`);
-    
+function row(type, key = '', value = '') {    
     const list = document.getElementById(`${type}-list`);
     const count = list.querySelectorAll(type).length;
 
@@ -26,6 +28,7 @@ function row(type) {
         cl: `option-field ${type}-key`
     });
     keyInput.type = 'text';
+    keyInput.value = key;
 
     util.appendNew({
         type: 'span',
@@ -34,20 +37,27 @@ function row(type) {
         text: '='
     });
 
-    const valInput = util.appendNew({
+    const valueInput = util.appendNew({
         type: 'input',
         parent: row,
         cl: `option-field ${type}-value`
     });
-    valInput.type = 'text';
+    valueInput.type = 'text';
+    valueInput.value = value;
+
+    if (type === 'query') {
+        keyInput.addEventListener('input', queryToSearch);
+        valueInput.addEventListener('input', queryToSearch);
+    }
 
     const deleteBtn = util.appendNew({
         type: 'button',
         parent: row,
-        cl: `option-button ${type}-delete`,
+        cl: `option-button option-delete`,
     });
     deleteBtn.addEventListener('click', () => {
         row.remove();
+        queryToSearch();
     });
 
     util.appendNew({
@@ -57,10 +67,54 @@ function row(type) {
     });
 }
 
-export function queryRow() {
+function emptyQueryRow() {
     row("query");
 }
 
-export function headerRow() {
+function emptyHeaderRow() {
     row("header");
+}
+
+export function queryRow(key = '', value = '') {
+    row("query", key, value);
+}
+
+export function headerRow(key = '', value = '') {
+    row("header", key, value);
+}
+
+export function searchToQuery() {
+    const searchBox = document.getElementById('search');
+    const queryList = document.getElementById('query-list');
+
+    queryList.innerHTML = '';
+
+    const parts = searchBox.value.split('?');
+
+    if (parts.length > 1) {
+        const params = new URLSearchParams(parts[1]);
+
+        params.forEach((value, key) => {
+            queryRow(key, value);
+        });
+    }
+}
+
+export function queryToSearch() {
+    const searchBox = document.getElementById('search');
+    const queries = document.querySelectorAll('.query');
+
+    const baseUrl = searchBox.value.split('?')[0];
+    const params = [];
+
+    queries.forEach(query => {
+        const key = query.querySelector('.query-key').value.trim();
+        const value = query.querySelector('.query-value').value.trim();
+
+        if (key) {
+            params.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+        }
+    });
+
+    searchBox.value = (params.length > 0) ? `${baseUrl}?${params.join('&')}` : baseUrl;
 }
