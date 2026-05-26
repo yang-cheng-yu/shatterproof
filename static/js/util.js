@@ -82,8 +82,8 @@ export function showToast(message, color = null, duration = 3000) {
         text: message
     });
 
-    if (type != null) {
-        toast.classList.add(type);
+    if (color != null) {
+        toast.classList.add(color);
     }
 
     requestAnimationFrame(() => {
