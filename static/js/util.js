@@ -98,3 +98,31 @@ export function showToast(message, type = null, duration = 3000) {
         });
     }, duration);
 }
+
+/**
+ * Shows a Bootstrap alert briefly
+ * @param {string} message Message shown on the alert
+ * @param {string} type "success" or "danger" or "primary"
+ * @param {number} duration How long the alert stays on screen in ms
+ */
+export function showBootstrapAlert(message, type = 'success', duration = 3000) {
+    const wrapper = document.getElementById('alert-wrapper');
+    
+    wrapper.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    
+    const alertElement = wrapper.firstElementChild;
+
+    if (duration) {
+        setTimeout(() => {
+        if (document.body.contains(alertElement)) {
+            const bsAlert = new bootstrap.Alert(alertElement);
+            bsAlert.close();
+        }
+        }, duration);
+    }
+}

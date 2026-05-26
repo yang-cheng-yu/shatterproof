@@ -44,6 +44,12 @@ async function go() {
     const headers = document.querySelectorAll('.header');
     const headersObj = {};
 
+    // Check if uri is empty
+    if (uri == '') {
+        util.showBootstrapAlert("No URI entered", "primary")
+        return;
+    }
+
     // Get the header into key-value pairs
     headers.forEach(header => {
         const key = header.querySelector('.header-key').value;
@@ -88,9 +94,16 @@ async function go() {
     try {
         response = await FetchWrapper.request(uri, options);
     } catch (error) {
-        util.showToast(error.message, "red");
+        // util.showToast(error.message, "red");
+        util.showBootstrapAlert(error.message, "danger");
         if (error instanceof NetworkError) {
             return;
+        }
+        if (error instanceof HttpError) {
+            response = {
+                status: error.status,
+                statusText: error.statusText
+            }
         }
     }
 
@@ -100,7 +113,13 @@ async function go() {
     const status = response.status;
     const isSuccess = status >= 200 && status < 300;
     const statusLine = status + " " + response.statusText;
-    const contentType = response.headers.get('content-type') || 'text/plain';
+
+    let contentType
+    try {
+        contentType = response.headers.get('content-type');
+    } catch (err) {
+        contentType = '';
+    }
 
     statusBox.textContent = statusLine;
     statusBox.classList.toggle('status-green', isSuccess);
@@ -110,7 +129,11 @@ async function go() {
 
     // If it's JSON
     if (isSuccess) {
-        util.showToast(statusLine + " Request successful: " + contentType, "green");
+
+        // util.showToast(statusLine + " Request successful: " + contentType, "green");
+
+        util.showBootstrapAlert(statusLine + " Request successful: " + contentType, "success");
+
         if (contentType && contentType.includes('application/json')) {
             const jsonObj = await response.json();
             if (jsonObj?.meta != null) {

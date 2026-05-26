@@ -13,6 +13,8 @@ body {
     transition: 0.2s ease
 }
 
+/* Toasts */
+
 #toast-wrapper {
     display: flex;
     flex-direction: column-reverse;
@@ -55,6 +57,21 @@ body {
     border: 3px solid #4a75ac;
 }
 
+/* Bootstrap */
+
+#alert-wrapper {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/*  */
+/* Top Bar */
+/*  */
+
 .top-bar {
     display: flex;
     align-items: center;
@@ -73,7 +90,11 @@ body {
     font-weight: bold;
 }
 
-.container {
+/*  */
+/* Main Area */
+/*  */
+
+.wrapper {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -90,6 +111,8 @@ body {
     height: 300px;
     width: 80%;
 }
+
+/* Search Section */
 
 .center-bar {
     display: flex;
@@ -165,7 +188,6 @@ body {
 #go {
     background-color: #508a55;
 
-
     width: 150px;
     height: 100%;
     padding: 15px;
@@ -186,6 +208,8 @@ body {
     background-color: #74c47b;
     outline: none;
 }
+
+/* Options Section */
 
 .options-box {
     display: grid;
@@ -271,6 +295,12 @@ body {
     resize: none;
     overflow-y: scroll;
 }
+
+.gap {
+    min-height: 10px;
+}
+
+/* Response Section */
 
 .response-box {
     display: flex;
