@@ -1,2 +1,2 @@
-# shatterproof
+# sHaTTerProof
 HTTP Client
