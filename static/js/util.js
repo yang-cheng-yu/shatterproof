@@ -69,10 +69,10 @@ export function isValidJson(string) {
 /**
  * Shows a toast at the bottom right of the screen briefly
  * @param {string} message Message shown on the toast
- * @param {string} type "green" or "red" or "blue"
+ * @param {string} color "green" or "red" or "blue"
  * @param {number} duration How long the toast stays on screen in ms
  */
-export function showToast(message, type = null, duration = 3000) {
+export function showToast(message, color = null, duration = 3000) {
     let container = document.getElementById('toast-wrapper');
 
     const toast = appendNew({

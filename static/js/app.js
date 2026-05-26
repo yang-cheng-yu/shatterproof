@@ -14,8 +14,9 @@ function init() {
     document.getElementById('copy-response').addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(document.getElementById('response').value);
+            util.showToast("Copied to clipboard", "blue");  
         } catch (err) {
-            console.log('Copy failed');      
+            util.showToast("Copy failed ?", "red");  
         }
     });
 }
