@@ -52,7 +52,7 @@ body {
 .center-bar {
     display: flex;
     align-items: center;
-    width: 80%;
+    width: 90%;
     height: calc(1.5rem + 30px);
     background-color: #5f5863;
 
@@ -148,7 +148,7 @@ body {
 .options-box {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 80%;
+    width: 90%;
 
     background-color: #3f3f3f;
     border-radius: 25px;
@@ -205,6 +205,14 @@ body {
     background-color: #636363;
 }
 
+.option-delete {
+    transition: 0.2s ease;
+}
+
+.option-delete:hover {
+    background-color: #ff3535aa;
+}
+
 #body {
     width: 100%;
     height: 500px;
@@ -226,7 +234,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80%;
+    width: 90%;
     max-height: 100vh;
     padding: 25px;
 
@@ -324,4 +332,22 @@ body {
 
 .status-red {
     color: #d44a4a;
+}
+
+/* Media Queries  */
+
+@media (max-width: 1024px) {
+  .options-box {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .options-box > :nth-child(3) {
+    grid-column: span 2; 
+  }
+}
+
+@media (max-width: 768px) {
+  .options-box {
+    grid-template-columns: 1fr;
+  }
 }
