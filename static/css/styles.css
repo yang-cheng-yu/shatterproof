@@ -9,6 +9,9 @@ body {
     margin: 0;
     color: white;
 
+    background: linear-gradient(#b18398, #33263b);
+    background-repeat: no-repeat;
+
     overflow-x: hidden;
     transition: 0.2s ease
 }
@@ -82,12 +85,10 @@ body {
     align-items: center;
     width: 100%;
     min-height: 100%;
-    background: linear-gradient(#b18398, #33263b);
-    background-repeat: no-repeat;
 }
 
 .over-section {
-    height: 300px;
+    height: 100px;
     width: 80%;
 }
 
