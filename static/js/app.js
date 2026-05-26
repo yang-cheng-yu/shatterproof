@@ -8,7 +8,13 @@ function init() {
     optionControl.init();
 
     document.getElementById('go').addEventListener('click', go);
-
+    document.getElementById('copy-response').addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(document.getElementById('response').value);
+        } catch (err) {
+            console.log('Copy failed');      
+        }
+    });
 }
 
 async function go() {
@@ -70,8 +76,6 @@ async function go() {
             console.log('Network Error');
         }
     }
-    console.log(response);
-    
 
     const status = response.status;
     const isSuccess = status >= 200 && status < 300;
@@ -85,7 +89,25 @@ async function go() {
     contentTypeBox.textContent = contentType;
 
     if (contentType && contentType.includes('application/json')) {
-        responseBox.value = JSON.stringify(await response.json(), null, 2);
+        const jsonObj = await response.json();
+        if (jsonObj?.meta != null) {
+            const meta = jsonObj.meta;
+
+            const page = meta.page ?? meta.current_page;
+            const size = meta.page_size;
+            const total = meta.total;
+            let totalPages = meta.total_pages;
+
+            if (page != null) {
+                if (total != null && size > 0 && totalPages == null) {
+                    totalPages = Math.ceil(total / size);
+                }
+                if (totalPages != null) {
+                    paginate(totalPages);
+                }
+            }
+        }
+        responseBox.value = JSON.stringify(jsonObj, null, 2);
     } else {
         responseBox.value = await response.text();
     }
@@ -96,4 +118,40 @@ async function go() {
     }
 
     responseContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+/**
+ * Enables pagination options
+ * @param {number} totalPages 
+ */
+function paginate(totalPages) {
+    const container = document.getElementById('pagination');
+
+    container.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = util.appendNew({
+            type: 'button',
+            parent: container,
+            cl: `option-button`,
+            text: String(i)
+        });
+        pageBtn.addEventListener('click', () => {
+            optionControl.queryRow('page', i);
+            optionControl.queryToSearch();
+            go();
+        });
+    }
+
+    container.classList.remove('closed');
+    container.classList.add('open');
+}
+
+/**
+ * Disables pagination options
+ */
+function unpaginate() {
+    const container = document.getElementById('pagination');
+    container.classList.remove('open');
+    container.classList.add('closed');
 }
