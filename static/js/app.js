@@ -45,6 +45,12 @@ async function go() {
     const headers = document.querySelectorAll('.header');
     const headersObj = {};
 
+    // Check if uri provided
+    if (uri == '') {
+        util.showToast("No URI entered", "blue");
+        return;
+    }
+
     // Get the header into key-value pairs
     headers.forEach(header => {
         const key = header.querySelector('.header-key').value;
