@@ -4,6 +4,9 @@ import * as optionControl from "./optionControl.js"
 
 document.addEventListener('DOMContentLoaded', init);
 
+/**
+ * Initializes the app (Entry point)
+ */
 function init() {
     optionControl.init();
 
@@ -17,9 +20,18 @@ function init() {
     });
 }
 
+/**
+ * Performs the search and parses the response
+ */
 async function go() {
-    document.getElementById('go').blur;
+    // Un-highlight the go button
+    document.getElementById('go').blur();
 
+    /*=================
+    - Validation Segment -
+    =================*/
+
+    // Fields
     const responseContainer = document.querySelector('.response-box');
     const responseBox = document.getElementById('response');
     const statusBox = document.getElementById('status');
@@ -32,6 +44,7 @@ async function go() {
     const headers = document.querySelectorAll('.header');
     const headersObj = {};
 
+    // Get the header into key-value pairs
     headers.forEach(header => {
         const key = header.querySelector('.header-key').value;
         const value = header.querySelector('.header-value').value;
@@ -41,6 +54,7 @@ async function go() {
         }
     });    
 
+    // Construct the options
     const options = {
         headers: headersObj,
         method: method,
@@ -52,6 +66,7 @@ async function go() {
         }
     }
 
+    // Corrects the URL if needed
     if (!(uri.startsWith('http://') || uri.startsWith('https://'))) {
         if (uri.startsWith('localhost') || uri.startsWith('127.0.0.1')) {
             uri = 'http://' + uri;
@@ -65,6 +80,9 @@ async function go() {
         return;
     }
 
+    /*=================
+    - Request Segment -
+    =================*/
     let response;
 
     try {
@@ -77,6 +95,9 @@ async function go() {
         }
     }
 
+    /*=================
+    - Parsing Segment -
+    =================*/
     const status = response.status;
     const isSuccess = status >= 200 && status < 300;
     const statusLine = status + " " + response.statusText;
@@ -88,6 +109,7 @@ async function go() {
 
     contentTypeBox.textContent = contentType;
 
+    // If it's JSON
     if (contentType && contentType.includes('application/json')) {
         const jsonObj = await response.json();
         if (jsonObj?.meta != null) {
@@ -98,18 +120,23 @@ async function go() {
             const total = meta.total;
             let totalPages = meta.total_pages;
 
+            // If pagination exists at this endpoint, it paginates it
             if (page != null) {
+                // If total_pages does not exist use this instead
                 if (total != null && size > 0 && totalPages == null) {
                     totalPages = Math.ceil(total / size);
                 }
                 if (totalPages != null) {
                     paginate(totalPages);
+                } else {
+                    unpaginate();
                 }
             }
         }
         responseBox.value = JSON.stringify(jsonObj, null, 2);
     } else {
         responseBox.value = await response.text();
+        unpaginate();
     }
 
     if (responseContainer.classList.contains('closed')) {
@@ -117,6 +144,7 @@ async function go() {
         responseContainer.classList.add('open');
     }
 
+    // Scrolls to Response
     responseContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 

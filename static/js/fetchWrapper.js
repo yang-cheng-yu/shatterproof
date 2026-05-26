@@ -18,6 +18,12 @@ export class NetworkError extends Error {
 
 export class FetchWrapper {
 
+  /**
+   * Performs the request
+   * @param {string} uri The uri 
+   * @param {object} options The options object that includes the headers, method and body
+   * @returns {Response} The response object
+   */
   static async request(uri, options = {}) {
 
     let response;
@@ -34,14 +40,4 @@ export class FetchWrapper {
 
     return response;
   }
-
-  async _parseResponse(response) {
-    const contentType = response.headers.get('content-type');
-
-    if (contentType && contentType.includes('application/json')) {
-      return response.json();
-    }
-    
-    return response.text();
-  } 
 }
