@@ -12,11 +12,16 @@ function init() {
 
     document.getElementById('go').addEventListener('click', go);
     document.getElementById('copy-response').addEventListener('click', async () => {
-        try {
-            await navigator.clipboard.writeText(document.getElementById('response').value);
-            util.showToast("Copied to clipboard", "blue");  
-        } catch (err) {
-            util.showToast("Copy failed ?", "red");  
+        const text = document.getElementById('response').value.trim();
+        if (text == '') {
+            util.showToast("Nothing to copy ?", "red");  
+        } else {
+            try {
+                await navigator.clipboard.writeText(document.getElementById('response').value);
+                util.showToast("Copied to clipboard", "blue");  
+            } catch (err) {
+                util.showToast("Copy failed ?", "red");  
+            }
         }
     });
 }
@@ -99,6 +104,12 @@ async function go() {
         if (error instanceof NetworkError) {
             return;
         }
+        if (error instanceof HttpError) {
+            response = {
+                status: error.status,
+                statusText: error.statusText
+            }
+        }
     }
 
     /*=================
@@ -107,7 +118,13 @@ async function go() {
     const status = response.status;
     const isSuccess = status >= 200 && status < 300;
     const statusLine = status + " " + response.statusText;
-    const contentType = response.headers.get('content-type') || 'text/plain';
+
+    let contentType;
+    try {
+        contentType = response.headers.get('content-type');
+    } catch (err) {
+        contentType = '';
+    }
 
     statusBox.textContent = statusLine;
     statusBox.classList.toggle('status-green', isSuccess);
