@@ -88,10 +88,9 @@ async function go() {
     try {
         response = await FetchWrapper.request(uri, options);
     } catch (error) {
-        if (error instanceof HttpError) {
-            console.log('HTTP Error:' + error.status);
-        } else if (error instanceof NetworkError) {
-            console.log('Network Error');
+        util.showToast(error.message, "red");
+        if (error instanceof NetworkError) {
+            return;
         }
     }
 
@@ -110,34 +109,38 @@ async function go() {
     contentTypeBox.textContent = contentType;
 
     // If it's JSON
-    if (contentType && contentType.includes('application/json')) {
-        const jsonObj = await response.json();
-        if (jsonObj?.meta != null) {
-            const meta = jsonObj.meta;
+    if (isSuccess) {
+        util.showToast(statusLine + " Request successful: " + contentType, "green");
+        if (contentType && contentType.includes('application/json')) {
+            const jsonObj = await response.json();
+            if (jsonObj?.meta != null) {
+                const meta = jsonObj.meta;
 
-            const page = meta.page ?? meta.current_page;
-            const size = meta.page_size;
-            const total = meta.total;
-            let totalPages = meta.total_pages;
+                const page = meta.page ?? meta.current_page;
+                const size = meta.page_size;
+                const total = meta.total;
+                let totalPages = meta.total_pages;
 
-            // If pagination exists at this endpoint, it paginates it
-            if (page != null) {
-                // If total_pages does not exist use this instead
-                if (total != null && size > 0 && totalPages == null) {
-                    totalPages = Math.ceil(total / size);
-                }
-                if (totalPages != null) {
-                    paginate(totalPages);
-                } else {
-                    unpaginate();
+                // If pagination exists at this endpoint, it paginates it
+                if (page != null) {
+                    // If total_pages does not exist use this instead
+                    if (total != null && size > 0 && totalPages == null) {
+                        totalPages = Math.ceil(total / size);
+                    }
+                    if (totalPages != null) {
+                        paginate(totalPages);
+                    } else {
+                        unpaginate();
+                    }
                 }
             }
+            responseBox.value = JSON.stringify(jsonObj, null, 2);
+        } else {
+            responseBox.value = await response.text();
+            unpaginate();
         }
-        responseBox.value = JSON.stringify(jsonObj, null, 2);
-    } else {
-        responseBox.value = await response.text();
-        unpaginate();
     }
+    
 
     if (responseContainer.classList.contains('closed')) {
         responseContainer.classList.remove('closed');

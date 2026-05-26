@@ -65,3 +65,36 @@ export function isValidJson(string) {
     return false;
   }
 }
+
+/**
+ * Shows a toast at the bottom right of the screen briefly
+ * @param {string} message Message shown on the toast
+ * @param {string} type "green" or "red" or "blue"
+ * @param {number} duration How long the toast stays on screen in ms
+ */
+export function showToast(message, type = null, duration = 3000) {
+    let container = document.getElementById('toast-wrapper');
+
+    const toast = appendNew({
+        type: 'div',
+        parent: container,
+        cl: 'toast',
+        text: message
+    });
+
+    if (type != null) {
+        toast.classList.add(type);
+    }
+
+    requestAnimationFrame(() => {
+        toast.classList.add('show');
+    });
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        
+        toast.addEventListener('transitionend', () => {
+            toast.remove();
+        });
+    }, duration);
+}
