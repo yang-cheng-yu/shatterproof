@@ -14,8 +14,9 @@ function init() {
     document.getElementById('copy-response').addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(document.getElementById('response').value);
+            util.showBootstrapAlert("Copied to clipboard", "primary");
         } catch (err) {
-            console.log('Copy failed');      
+            util.showBootstrapAlert("Copy failed ?", "danger");
         }
     });
 }
